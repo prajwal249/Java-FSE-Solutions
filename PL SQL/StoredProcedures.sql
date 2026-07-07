@@ -1,46 +1,36 @@
--- Program 1: Greeting Procedure
+SET SERVEROUTPUT ON;
 
-CREATE OR REPLACE PROCEDURE greet_user
-AS
+-- Scenario 1: ProcessMonthlyInterest
+CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest IS
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Welcome to PL/SQL');
+    UPDATE Accounts SET Balance = Balance + (Balance * 0.01) WHERE AccountType = 'Savings';
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Monthly interest processed successfully.');
 END;
 /
 
+-- Scenario 2: UpdateEmployeeBonus
+CREATE OR REPLACE PROCEDURE UpdateEmployeeBonus(p_Department IN VARCHAR2, p_BonusPercent IN NUMBER) IS
 BEGIN
-    greet_user;
+    UPDATE Employees SET Salary = Salary + (Salary * p_BonusPercent / 100) WHERE Department = p_Department;
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Employee bonus updated successfully.');
 END;
 /
 
--- Program 2: Addition Procedure
-
-CREATE OR REPLACE PROCEDURE add_numbers(
-    a NUMBER,
-    b NUMBER
-)
-AS
+-- Scenario 3: TransferFunds
+CREATE OR REPLACE PROCEDURE TransferFunds(p_FromAccount IN NUMBER, p_ToAccount IN NUMBER, p_Amount IN NUMBER) IS
+    v_Balance NUMBER;
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Sum = ' || (a + b));
-END;
-/
-
-BEGIN
-    add_numbers(10,20);
-END;
-/
-
--- Program 3: Employee Details Procedure
-
-CREATE OR REPLACE PROCEDURE employee_details
-AS
-BEGIN
-    DBMS_OUTPUT.PUT_LINE('Employee ID : 101');
-    DBMS_OUTPUT.PUT_LINE('Employee Name : Rahul');
-    DBMS_OUTPUT.PUT_LINE('Department : IT');
-END;
-/
-
-BEGIN
-    employee_details;
+    SELECT Balance INTO v_Balance FROM Accounts WHERE AccountID = p_FromAccount;
+    
+    IF v_Balance >= p_Amount THEN
+        UPDATE Accounts SET Balance = Balance - p_Amount WHERE AccountID = p_FromAccount;
+        UPDATE Accounts SET Balance = Balance + p_Amount WHERE AccountID = p_ToAccount;
+        COMMIT;
+        DBMS_OUTPUT.PUT_LINE('Funds transferred successfully.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Insufficient Balance.');
+    END IF;
 END;
 /
