@@ -1,0 +1,21 @@
+.profile-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.profile-container h1 {
+  color: #1976d2;
+}
+
+.profile-card {
+  width: 50%;
+  margin: 20px auto;
+  padding: 25px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.profile-card h2 {
+  color: #1976d2;
+}

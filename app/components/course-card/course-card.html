@@ -1,0 +1,14 @@
+<div class="course-card" appHighlight="yellow" [ngClass]="cardClasses" [ngStyle]="{ 'border-left': course.gradeStatus === 'passed' ? '5px solid green' : course.gradeStatus === 'failed' ? '5px solid red' : '5px solid grey' }">
+  <h3>{{ course.name }}</h3>
+  <p>Course ID: {{ course.id }}</p>
+  <p>Code: {{ course.code }}</p>
+  <p>Credits: {{ course.credits | creditLabel }}</p>
+  <div [ngSwitch]="course.gradeStatus">
+    <p *ngSwitchCase="'passed'">Passed</p>
+    <p *ngSwitchCase="'failed'">Failed</p>
+    <p *ngSwitchCase="'pending'">Pending</p>
+  </div>
+  <button (click)="onEnroll()">{{ course.enrolled ? 'Unenroll' : 'Enroll' }}</button>
+  <button (click)="toggleDetails()">Show Details</button>
+  <p *ngIf="isExpanded">This is a featured course in the portal.</p>
+</div>

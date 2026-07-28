@@ -1,0 +1,33 @@
+<div class="container">
+  <h2>Reactive Enrollment</h2>
+  <form [formGroup]="enrollForm" (ngSubmit)="onSubmit()">
+    <label>Student Name</label>
+    <input formControlName="studentName" />
+    <div *ngIf="enrollForm.get('studentName')?.touched && enrollForm.get('studentName')?.hasError('required')">Name is required</div>
+
+    <label>Student Email</label>
+    <input formControlName="studentEmail" />
+
+    <label>Course Code</label>
+    <input formControlName="courseId" />
+    <div *ngIf="enrollForm.get('courseId')?.hasError('noCourseCode')">Course code starting with XX is not allowed.</div>
+
+    <label>Preferred Semester</label>
+    <select formControlName="preferredSemester">
+      <option>Odd</option>
+      <option>Even</option>
+    </select>
+
+    <label><input type="checkbox" formControlName="agreeToTerms" /> I agree</label>
+
+    <div formArrayName="additionalCourses">
+      <div *ngFor="let course of additionalCourses.controls; let i = index">
+        <input [formControlName]="i" />
+        <button type="button" (click)="removeCourse(i)">Remove</button>
+      </div>
+    </div>
+
+    <button type="button" (click)="addCourse()">Add Another Course</button>
+    <button type="submit">Submit</button>
+  </form>
+</div>
